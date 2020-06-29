@@ -1,9 +1,12 @@
 from __future__ import division, print_function
 
 import rospy
+import numpy as np
+import cv2
 from cv_bridge import CvBridge, CvBridgeError
 from darknet_ros_msgs.msg import BoundingBox, BoundingBoxes
 from sensor_msgs.msg import Image
+from sensor_msgs.msg import CompressedImage
 
 from trt_yolo.detector import DarknetTRT
 from utils import timeit_ros
@@ -46,7 +49,6 @@ class YOLORos(object):
         # default cuda device
         self.cuda_device = rospy.get_param("~cuda_device", 0)
         self.num_cameras = rospy.get_param("~num_cam", 1)
-        print(self.num_cameras)
         rospy.logdebug("[trt_yolo_ros] parameters read")
 
     @staticmethod
@@ -73,7 +75,7 @@ class YOLORos(object):
         )
         topic, queue_size, latch = self._read_publisher_param("image")
         self._pub_viz = rospy.Publisher(
-            topic, Image, queue_size=queue_size, latch=latch
+            topic, CompressedImage, queue_size=queue_size, latch=latch
         )
         # Image Subscriber
         for i in range(self.num_cameras):
@@ -141,8 +143,19 @@ class YOLORos(object):
             try:
                 rospy.logdebug("[trt_yolo_ros] publishing")
                 self._pub.publish(detection_results)
-                if self.publish_image:
-                    self._pub_viz.publish(self._bridge.cv2_to_imgmsg(visualization, "bgr8"))
+                if self.publish_image and boxes is not None:
+                    #compressed_msg = CompressedImage()
+                    #compressed_msg.header.stamp = current_msg.header.stamp
+                    #compressed_msg.format = "jpeg"
+                    #print("Generating data")
+                    #compressed_msg.data = np.array(cv2.imencode('.jpg', visualization)).tostring()
+                    #print("Going to publish")
+                    #self._pub_viz.publish(compressed_msg)
+                    compressed_image = self._bridge.cv2_to_compressed_imgmsg(visualization, dst_format='jpg')
+                    compressed_image.header.stamp = current_msg.header.stamp
+                    self._pub_viz.publish(compressed_image)
+                    self._pub_viz.publish(self._bridge.cv2_to_compressed_imgmsg(visualization, dst_format='jpg'))
+                    #self._pub_viz.publish(self._bridge.cv2_to_imgmsg(visualization, "bgr8"))
             except CvBridgeError as e:
                 rospy.logdebug("Failed to convert image %s" , str(e))
 

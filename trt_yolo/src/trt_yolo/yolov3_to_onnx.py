@@ -90,6 +90,7 @@ class DarkNetParser(object):
         cfg_file_path -- path to the yolov3.cfg file as string
         """
         with open(cfg_file_path, "r") as cfg_file:
+            print(cfg_file_path)
             remainder = cfg_file.read()
             while remainder is not None:
                 layer_dict, layer_name, remainder = self._next_layer(remainder)

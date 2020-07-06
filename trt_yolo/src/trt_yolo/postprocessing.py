@@ -39,7 +39,17 @@ class PostprocessYOLO(object):
         self.class_num = class_num
         self.input_resolution = input_resolution
         # reading paramters from config file
-        yolo_type = "yolov3-tiny" if "tiny" in yolo_type else "yolov3"
+        #yolo_type = "yolov3-tiny" if "tiny" in yolo_type "marble_tunnel-tiny" else if "marble" in yolo_type else "yolov3"
+        print("marble" in yolo_type)
+        if  not ("marble" in yolo_type) and "tiny" in yolo_type:
+            yolo_type = "yolov3-tiny"
+        elif "marble" in yolo_type:
+            yolo_type = "marble_tunnel-tiny"
+            print("case 2")
+        else:
+            yolo_type="yolov3"
+
+        print("Yolo Type", yolo_type)
         postprocessor_cfg = read_json(config_path)[yolo_type]
         self.masks = postprocessor_cfg["masks"]
         self.anchors = postprocessor_cfg["anchors"]

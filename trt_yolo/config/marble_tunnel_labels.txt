@@ -1,0 +1,5 @@
+survivor
+backpack
+cellphone
+drill
+extinguisher

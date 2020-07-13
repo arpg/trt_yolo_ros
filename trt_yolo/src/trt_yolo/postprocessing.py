@@ -273,8 +273,8 @@ class Visualization(object):
     """ Visualization class that takes boxes and places them on image """
     def __init__(
         self,
-        font_scale=0.5,
-        thickness=1,
+        font_scale=1.2,
+        thickness=3,
         font=cv2.FONT_HERSHEY_SIMPLEX,
     ):
         self.font_scale = font_scale
@@ -302,7 +302,7 @@ class Visualization(object):
                 image_raw,
                 (int(left), int(top)),
                 (int(right), int(bottom)),
-                (color[0], color[1], color[2]),
+                (0, 0, 255),
                 self.thickness,
             )
             text = ("{:s}:{:.2f}").format(label, score)

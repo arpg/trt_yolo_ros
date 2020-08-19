@@ -1,0 +1,5 @@
+survivor
+backpack
+helmet
+rope
+cell_phone

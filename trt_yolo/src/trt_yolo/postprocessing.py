@@ -43,9 +43,10 @@ class PostprocessYOLO(object):
         print("marble" in yolo_type)
         if  not ("marble" in yolo_type) and "tiny" in yolo_type:
             yolo_type = "yolov3-tiny"
-        elif "marble" in yolo_type:
+        elif "marble_tunnel-tiny" in yolo_type:
             yolo_type = "marble_tunnel-tiny"
-            print("case 2")
+        elif "marble_sim_cave" in yolo_type:
+            yolo_type = "marble_sim_cave"
         else:
             yolo_type="yolov3"
 

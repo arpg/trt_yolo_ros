@@ -116,6 +116,7 @@ class YOLORos(object):
             detection_msg.probability = score
             detection_msg.Class = category
             detection_results.bounding_boxes.append(detection_msg)
+            rospy.loginfo("Detected a %s", category)
         return detection_results
 
     @timeit_ros

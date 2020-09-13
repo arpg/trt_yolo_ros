@@ -48,7 +48,7 @@ class YOLORos(object):
         self.nms_threshold = rospy.get_param("~nms_threshold", 0.3)
         # default cuda device
         self.cuda_device = rospy.get_param("~cuda_device", 0)
-        self.num_cameras = rospy.get_param("~num_cam", 1)
+        self.num_cameras = rospy.get_param("~num_cam", 4)
         rospy.logdebug("[trt_yolo_ros] parameters read")
 
     @staticmethod
@@ -78,11 +78,14 @@ class YOLORos(object):
             topic, CompressedImage, queue_size=queue_size, latch=latch
         )
         # Image Subscriber
+        rospy.loginfo("Subscribing to % i cams", int(self.num_cameras))
         for i in range(self.num_cameras):
             topic, queue_size = self._read_subscriber_param("image" + str(i)) 
             self._image_sub = rospy.Subscriber(
                 topic, Image, self._image_callback, queue_size=queue_size, buff_size=2 ** 24
-        )
+            )
+            rospy.loginfo("Subscribing to camera: %s", str(topic))
+            
         rospy.logdebug("[trt_yolo_ros] publishers and subsribers initialized")
 
     def _image_callback(self, msg):

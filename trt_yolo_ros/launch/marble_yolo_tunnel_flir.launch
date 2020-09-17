@@ -29,7 +29,7 @@
     <!-- if you need more spped use 280 or 320 -->
     <!-- all configs and weights will be downloaded automatically -->
     <arg name =                      "yolo_type" default = "marble_tunnel_better-tiny-608"/>
-    <arg name =                  "obj_threshold" default = "0.7"/>
+    <arg name =                  "obj_threshold" default = "0.6"/>
     <arg name =                  "nms_threshold" default = "0.3"/>
     <arg name =              "postprocessor_cfg" default = "yolo_postprocess_config.json"/>
     <!-- Device to run the inference on. Sorry, no multiple devices for now -->

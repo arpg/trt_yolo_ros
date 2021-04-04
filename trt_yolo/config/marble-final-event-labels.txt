@@ -1,0 +1,7 @@
+survivor
+backpack
+drill
+extinguisher
+vent
+rope
+helmet

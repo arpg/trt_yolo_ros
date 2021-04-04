@@ -65,6 +65,7 @@ class DarknetTRT(object):
             line.rstrip("\n")
             for line in open(os.path.join(config_path, label_filename))
         ]
+        print(self.categories)
         self.postprocessor = PostprocessYOLO(
             yolo_type=yolo_type,
             config_path=os.path.join(config_path, postprocessor_cfg),
@@ -96,6 +97,7 @@ class DarknetTRT(object):
         if boxes is not None:
             boxes = self._boxes2angles(boxes)
             classes = [self.categories[label] for label in classes]
+            print(classes)
         obj_detected_img = None
         if self.drawer is not None:
             obj_detected_img = self.drawer(image, boxes, scores, classes)

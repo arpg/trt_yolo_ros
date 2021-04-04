@@ -40,11 +40,14 @@ class PostprocessYOLO(object):
         self.input_resolution = input_resolution
         # reading paramters from config file
         #yolo_type = "yolov3-tiny" if "tiny" in yolo_type "marble_tunnel-tiny" else if "marble" in yolo_type else "yolov3"
-        print("marble" in yolo_type)
+        #print("marble" in yolo_type)
+        print("Yolo Type", yolo_type)
         if  not ("marble" in yolo_type) and "tiny" in yolo_type:
             yolo_type = "yolov3-tiny"
         elif "marble_tunnel_better-tiny" in yolo_type:
             yolo_type = "marble_tunnel-tiny"
+        elif "marble-final-event" in yolo_type:
+            yolo_type = "marble-final-event-tiny"
         elif "marble_sim_cave" in yolo_type:
             yolo_type = "marble_sim_cave"
         else:
@@ -116,7 +119,9 @@ class PostprocessYOLO(object):
         boxes, categories, confidences = list(), list(), list()
         for output, mask in zip(outputs_reshaped, self.masks):
             box, category, confidence = self._process_feats(output, mask)
+            #print("Category before filter", category)
             box, category, confidence = self._filter_boxes(box, category, confidence)
+            print("Category after filter", category)
             boxes.append(box)
             categories.append(category)
             confidences.append(confidence)

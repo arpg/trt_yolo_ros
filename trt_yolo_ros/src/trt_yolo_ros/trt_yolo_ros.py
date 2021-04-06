@@ -130,7 +130,7 @@ class YOLORos(object):
         current_image = None
         # Convert to image to OpenCV format
         try:
-            current_image = self._bridge.imgmsg_to_cv2(current_msg, "bgr8")
+            current_image = self._bridge.imgmsg_to_cv2(current_msg, "rgb8")
             rospy.logdebug("[trt_yolo_ros] image converted for processing")
         except CvBridgeError as e:
             rospy.logdebug("Failed to convert image %s" , str(e))
@@ -155,10 +155,11 @@ class YOLORos(object):
                     #compressed_msg.data = np.array(cv2.imencode('.jpg', visualization)).tostring()
                     #print("Going to publish")
                     #self._pub_viz.publish(compressed_msg)
+                    visualization = cv2.cvtColor(visualization, cv2.COLOR_RGB2BGR)
                     compressed_image = self._bridge.cv2_to_compressed_imgmsg(visualization, dst_format='jpg')
                     compressed_image.header.stamp = current_msg.header.stamp
                     self._pub_viz.publish(compressed_image)
-                    self._pub_viz.publish(self._bridge.cv2_to_compressed_imgmsg(visualization, dst_format='jpg'))
+                    #self._pub_viz.publish(self._bridge.cv2_to_compressed_imgmsg(visualization, dst_format='jpg', encoding="bgr8"))
                     #self._pub_viz.publish(self._bridge.cv2_to_imgmsg(visualization, "bgr8"))
             except CvBridgeError as e:
                 rospy.logdebug("Failed to convert image %s" , str(e))

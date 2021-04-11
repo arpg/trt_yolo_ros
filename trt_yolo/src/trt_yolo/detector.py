@@ -97,7 +97,7 @@ class DarknetTRT(object):
         if boxes is not None:
             boxes = self._boxes2angles(boxes)
             classes = [self.categories[label] for label in classes]
-            print(classes)
+            #print(classes)
         obj_detected_img = None
         if self.drawer is not None:
             obj_detected_img = self.drawer(image, boxes, scores, classes)

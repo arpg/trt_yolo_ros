@@ -119,7 +119,7 @@ class YOLORos(object):
             detection_msg.probability = score
             detection_msg.Class = category
             detection_results.bounding_boxes.append(detection_msg)
-            rospy.loginfo("Detected a %s", category)
+            rospy.logdebug("Detected a %s", category)
         return detection_results
 
     @timeit_ros
@@ -148,19 +148,10 @@ class YOLORos(object):
                 rospy.logdebug("[trt_yolo_ros] publishing")
                 self._pub.publish(detection_results)
                 if self.publish_image and boxes is not None:
-                    #compressed_msg = CompressedImage()
-                    #compressed_msg.header.stamp = current_msg.header.stamp
-                    #compressed_msg.format = "jpeg"
-                    #print("Generating data")
-                    #compressed_msg.data = np.array(cv2.imencode('.jpg', visualization)).tostring()
-                    #print("Going to publish")
-                    #self._pub_viz.publish(compressed_msg)
                     visualization = cv2.cvtColor(visualization, cv2.COLOR_RGB2BGR)
                     compressed_image = self._bridge.cv2_to_compressed_imgmsg(visualization, dst_format='jpg')
                     compressed_image.header.stamp = current_msg.header.stamp
                     self._pub_viz.publish(compressed_image)
-                    #self._pub_viz.publish(self._bridge.cv2_to_compressed_imgmsg(visualization, dst_format='jpg', encoding="bgr8"))
-                    #self._pub_viz.publish(self._bridge.cv2_to_imgmsg(visualization, "bgr8"))
             except CvBridgeError as e:
                 rospy.logdebug("Failed to convert image %s" , str(e))
 

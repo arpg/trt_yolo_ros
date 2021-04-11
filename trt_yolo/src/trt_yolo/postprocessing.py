@@ -119,9 +119,7 @@ class PostprocessYOLO(object):
         boxes, categories, confidences = list(), list(), list()
         for output, mask in zip(outputs_reshaped, self.masks):
             box, category, confidence = self._process_feats(output, mask)
-            #print("Category before filter", category)
             box, category, confidence = self._filter_boxes(box, category, confidence)
-            print("Category after filter", category)
             boxes.append(box)
             categories.append(category)
             confidences.append(confidence)
